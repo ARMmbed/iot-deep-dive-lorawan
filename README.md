@@ -347,6 +347,12 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 * You can use Cayenne MyDevices to create a dashboard. Instructions are [here](https://www.thethingsnetwork.org/docs/applications/cayenne/).
 * Add readings from the humidity sensor, and send them to the dashboard too.
 
+## 6. A map with sensors...
+
+![Map](media/ttn25.png)
+
+Got everything working? Add your sensor to the map! Go to http://ec2-52-211-146-247.eu-west-1.compute.amazonaws.com:7271/ and put your application ID in the top right corner. When prompted, add your access key!
+
 ![Victory](media/victory.gif)
 
 **Add coverage**
