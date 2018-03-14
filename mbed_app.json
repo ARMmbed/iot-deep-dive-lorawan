@@ -30,7 +30,7 @@
             "platform.stdio-baud-rate": 9600,
             "platform.default-serial-baud-rate": 9600,
             "target.features_add": ["COMMON_PAL"],
-            "mbed-trace.enable": false,
+            "mbed-trace.enable": true,
             "lora.over-the-air-activation": false,
             "lora.duty-cycle-on": true,
             "lora.phy": 8,
