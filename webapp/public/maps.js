@@ -87,7 +87,7 @@ function initMap() {
                         socket.removeListener('temperature-change', pc);
                         return;
                     }
-                    if (d.appId !== device.appId && d.devId !== device.devId) {
+                    if (d.appId !== device.appId || d.devId !== device.devId) {
                         return;
                     }
 
