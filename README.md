@@ -304,7 +304,7 @@ The application authenticates with the The Things Network and receives any messa
 
 Got everything working? Add your sensor to the map! Go to http://ec2-52-211-146-247.eu-west-1.compute.amazonaws.com:7271/ and put your application ID in the top right corner. When prompted, add your access key!
 
-Want to hack on the map code? It's on [GitHub](https://github.com/ARMmbed/iot-deep-dive-lorawan).
+Want to hack on the map code? It's on [GitHub](https://github.com/janjongboom/ttn-sensor-maps).
 
 ![Victory](media/victory.gif)
 
