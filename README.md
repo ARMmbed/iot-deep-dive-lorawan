@@ -1,6 +1,6 @@
 # IoT Deep Dive - LoRaWAN
 
-Welcome to the IoT deep dive session on LoRaWAN. If you have any questions, please just give a shout. We are here to help.
+Welcome to the IoT Deep Dive session on LoRaWAN. If you have any questions, please just give a shout. We are here to help.
 
 In this session you'll be building some examples, introducing you to:
 
@@ -8,12 +8,12 @@ In this session you'll be building some examples, introducing you to:
 1. Connecting your device to [The Things Network](https://www.thethingsnetwork.org/) using LoRaWAN.
 1. Data visualization through the TTN API.
 
-In case you're stuck this document will help you get back on track. If you're a fast learner, there are 'extra credit'-assignments at the end of each section. Please help your neighbours as well :-)
+In case you're stuck, this document will help you get back on track. If you're a fast learner, there are "extra credit" assignments at the end of each section. Please help your neighbors as well. :-)
 
 ## Prerequisites
 
 1. Create an Arm Mbed online account [here](https://os.mbed.com/account/signup/).
-1. Then install the following software for your operating system below.
+1. Then install the following software for your operating system below:
 
 **Windows**
 
@@ -41,7 +41,7 @@ If you're on MacOS, install:
 
 ## Building the circuit
 
-We're using the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) development board, which contains the Multi-Tech xDot module. In addition you can use a Grove temperature & humidity sensor. Let's connect these sensors and verify that the board works.
+We're using the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) development board, which contains the Multi-Tech xDot module. In addition, you can use a Grove temperature & humidity sensor. Let's connect these sensors and verify that the board works.
 
 Grab the following items:
 
@@ -71,7 +71,7 @@ Now let's build a simple application which reads the sensor data and prints it t
 1. Click *Import*.
 1. In the top right corner make sure you selected 'L-TEK FF1705'.
 
-    ![Select right platform](media/mbed3.png)
+    ![Select the correct platform](media/mbed3.png)
 
 This has cloned the repository. Now it's time to create some keys for this device so it can join the network.
 
@@ -162,7 +162,7 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 
 ![Put in the keys](media/ttn24.png)
 
-**Note 1:** Make sure to put `0x` in front of device address!!!
+**Note:** Make sure to put `0x` in front of device address!!!
 
 Now compile this application:
 
@@ -171,7 +171,7 @@ Now compile this application:
 
     ![Compile](media/mbed4.png)
 
-1. 1. A binary (.bin) file downloads, use drag-and-drop to drag the file to the DAPLINK device (like a USB mass storage device).
+1. 1. A binary (.bin) file downloads, use drag-and-drop to copy the file to the DAPLINK device (like a USB mass storage device).
 
     **Note:** Here's a [video](https://youtu.be/L5TcmFFD0iw?t=1m25s).
 
@@ -206,7 +206,7 @@ When you open Tera Term, select *Serial*, and then select the Mbed COM port.
 
 ![Tera Term](media/mbed5.png)
 
-#### OS/X
+#### MacOS
 
 No need to install a driver. Open a terminal and run:
 
@@ -237,7 +237,7 @@ To exit, press `CTRL+A` then type `:quit`.
 
 To get some data out of The Things Network you can use their API. Today we'll use the node.js API, but there are many more.
 
-First, you need the application ID, and the application key.
+First, you need the application ID and the application key.
 
 1. Open the TTN console and go to your application.
 1. Your application ID is noted on the top, write it down.
@@ -315,4 +315,3 @@ Setting up a gateway is easy and becomes more and more affordable. Here are two 
 
 1. The highly configurable [Multi-Tech Conduit](https://www.digikey.com/en/product-highlight/m/multi-tech-systems/iot-platform); you need an `MTAC-LORA-915` or `MTAC-LORA-868` depending [on your country](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html), as well as a `MTCDT` Conduit;
 1. The Things Network's own product, [The Things Gateway 915 MHz](http://www.newark.com/productimages/standard/en_US/05AC1807-40.jpg) or [The Things Gateway 868 MHz](http://uk.farnell.com/the-things-network/ttn-gw-868/the-things-gateway-eu/dp/2675813)
-
