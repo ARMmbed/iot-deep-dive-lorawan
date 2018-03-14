@@ -180,6 +180,8 @@ The board should now connect to The Things Network. Inspect the *Data* tab in th
 
 ![console-data](media/console-data.png)
 
+**No data:** Check the logs!
+
 ## 3. Showing logs
 
 Something not right? Let's inspect the logs... If all is well, you should see something similar to:
@@ -188,9 +190,15 @@ Something not right? Let's inspect the logs... If all is well, you should see so
 LoRaWAN stack initialized
 Connection - In Progress ...
 Connection - Successful
-Sensor value is 26.00
+Sensor value is 23.00
+[INFO][LSTK]: RTS = 4 bytes, PEND = 0
+[DBG ][LMAC]: Next Channel Idx=6, DR=0
+[DBG ][LSTK]: Frame scheduled to TX..
 4 bytes scheduled for transmission
+Message Sent to Network Server
 ```
+
+You should see the channels jumping between 8 and 15. If not, wait about a minute to let the sub-band frequency set. Often it takes a while to recognize the right channels.
 
 #### Windows
 
