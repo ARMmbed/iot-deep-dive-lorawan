@@ -295,7 +295,7 @@ The application authenticates with the The Things Network and receives any messa
 
 ## 5. Making a dashboard / extra credit
 
-* You can use Cayenne MyDevices to create a dashboard. Instructions are [here](https://www.thethingsnetwork.org/docs/applications/cayenne/).
+* Make a small dashboard out of the node.js app, show a nice graph!
 * Add readings from the humidity sensor, and send them to the dashboard too.
 
 ## 6. A map with sensors...
