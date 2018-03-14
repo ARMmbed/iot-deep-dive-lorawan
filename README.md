@@ -8,7 +8,7 @@ In this session you'll be building some examples, introducing you to:
 1. Connecting your device to [The Things Network](https://www.thethingsnetwork.org/) using LoRaWAN.
 1. Data visualization through the TTN API.
 
-In case you're stuck, this document will help you get back on track. If you're a fast learner, there are "extra credit" assignments at the end of each section. Please help your neighbors as well. :-)
+In case you're stuck, this document will help you get back on track. If you're a fast learner, there are "extra credit" assignments at the end of this workbook. Please help your neighbors as well. :-)
 
 ## Prerequisites
 
@@ -260,7 +260,7 @@ With these keys we can write a Node.js application that can retrieve data from T
 1. In this folder run:
 
     ```
-    $ npm install ttn blessed blessed-contrib
+    $ npm install ttn
     ```
 
     **Note:** You can ignore the `ENOENT: no such file or directory` errors.
