@@ -1,0 +1,6 @@
+.mbed
+BUILD/
+GettingStarted.html
+Makefile
+mbed-lora-radio-drv/
+mbed_settings.*
