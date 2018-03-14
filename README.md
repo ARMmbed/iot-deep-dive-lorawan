@@ -54,11 +54,13 @@ Click the Grove connector onto the temperature sensor. Connect the wires to the 
 
 * Red -> 5V
 * Black -> GND
-* Yellow -> SPI_MOSI
+* Yellow -> SPI_MISO
 
-## 1. A simple application
+![Wires](media/ttn26.jpg)
 
-Now let's build a simple application which reads the sensor data and prints it to the serial console. Note that it takes three minutes to get the sensor to warm up!
+## 1. Building an application
+
+Now let's build a simple application which reads the sensor data and prints it to the serial console.
 
 1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
 1. Go to the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) platform page and click *Add to your Mbed compiler*.
