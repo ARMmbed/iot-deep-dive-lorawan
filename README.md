@@ -164,13 +164,13 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 
 **Note:** Make sure to put `0x` in front of device address!!! (i.e. `"lora.device-address": "0x26021CED",`)
 
-Now compile this application:
+Now compile the application:
 
 1. Click *Compile*.
 
     ![Compile](media/mbed4.png)
 
-1. 1. A binary (.bin) file downloads, use drag-and-drop to copy the file to the DAPLINK device (like a USB mass storage device).
+1. A binary (.bin) file downloads, use drag-and-drop to copy the file to the DAPLINK device (like a USB mass storage device).
 
     **Note:** Here's a [video](https://youtu.be/L5TcmFFD0iw?t=1m25s).
 
