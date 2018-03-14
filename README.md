@@ -292,57 +292,6 @@ With these keys we can write a Node.js application that can retrieve data from T
 
 The application authenticates with the The Things Network and receives any message from your device.
 
-**Showing simple graphs**
-
-We can also graph the values directly to the console. Replace `server.js` with:
-
-```js
-let TTN_APP_ID = 'YOUR_APP_ID';
-let TTN_ACCESS_KEY = 'YOUR_ACCESS_KEY';
-
-const ttn = require('ttn');
-const blessed = require('blessed');
-const contrib = require('blessed-contrib');
-const screen = blessed.screen();
-const line = contrib.line({ width: 80, height: 20, left: 0, bottom: 0, xPadding: 5, yPadding: 10, minY: 0, maxY: 50, numYLabels: 7 });
-
-let data = [
-    { title: 'Temperature',
-        x: [ ],
-        y: [ ],
-        style: {
-            line: 'red'
-        }
-    }
-];
-
-TTN_APP_ID = process.env['TTN_APP_ID'] || TTN_APP_ID;
-TTN_ACCESS_KEY = process.env['TTN_ACCESS_KEY'] || TTN_ACCESS_KEY;
-
-let series = [];
-
-ttn.data(TTN_APP_ID, TTN_ACCESS_KEY).then(client => {
-    client.on('uplink', (devId, payload) => {
-        // console.log('retrieved uplink message', devId, payload.payload_fields.temperature_10);
-
-        data[0].x.push(new Date(payload.metadata.time).toLocaleTimeString().split(' ')[0]);
-        data[0].y.push(payload.payload_fields.temperature_10);
-
-        line.setData(data);
-        screen.render();
-    });
-
-    console.log('Connected to The Things Network data channel');
-});
-
-
-screen.append(line); //must append before setting data
-
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  return process.exit(0);
-});
-```
-
 ## 5. Making a dashboard / extra credit
 
 * You can use Cayenne MyDevices to create a dashboard. Instructions are [here](https://www.thethingsnetwork.org/docs/applications/cayenne/).
