@@ -1,172 +1,360 @@
-# Example LoRaWAN application for Mbed-OS
+# IoT Deep Dive - LoRaWAN
 
-This is an example application based on `Mbed-OS` LoRaWAN protocol APIs. The Mbed-OS LoRaWAN stack implementation is compliant with LoRaWAN v1.0.2 specification. 
+Welcome to the IoT deep dive session on LoRaWAN. If you have any questions, please just give a shout. We are here to help.
 
-## Getting started
+In this session you'll be building five examples, introducing you to:
 
-This application can work with any Network Server if you have correct credentials for the said Network Server. 
+1. Building IoT devices with [Arm Mbed OS](https://os.mbed.com/).
+1. Connecting your device to [The Things Network](https://www.thethingsnetwork.org/) using LoRaWAN.
+1. Data visualization with CayenneLPP.
 
-### Download the application
+In case you're stuck this document will help you get back on track. If you're a fast learner, there are 'extra credit'-assignments at the end of each section. Please help your neighbours as well :-)
 
-```sh
-$ mbed import mbed-os-example-lorawan
-$ cd mbed-os-example-lorawan
+## Prerequisites
 
-#OR
+1. Create an Arm Mbed online account [here](https://os.mbed.com/account/signup/).
+1. Then install the following software for your operating system below.
 
-$ git clone git@github.com:ARMmbed/mbed-os-example-lorawan.git
-$ cd mbed-os-example-lorawan
-$ mbed deploy
+**Windows**
+
+If you are on Windows, install:
+
+1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
+
+    **Note:** Not needed on Windows 10.
+
+1. [Tera term](https://osdn.net/projects/ttssh2/downloads/66361/teraterm-4.92.exe/) - to see debug messages from the board.
+1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
+
+**Linux**
+
+If you're on Linux, install:
+
+1. screen - e.g. via `sudo apt install screen`
+1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
+
+**MacOS**
+
+If you're on MacOS, install:
+
+1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
+
+## Building the circuit
+
+We're using the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) development board, which contains the Multi-Tech xDot module. In addition you can use a Grove temperature & humidity sensor. Let's connect these sensors and verify that the board works.
+
+Grab the following items:
+
+* Development board.
+* Micro-USB cable.
+* Grove temperature and humidity sensor.
+* Grove connector to male jumper wires.
+
+Click the Grove connector onto the temperature sensor. Connect the wires to the development board like this:
+
+* Red -> 5V
+* Black -> GND
+* Yellow -> SPI_MOSI
+
+## 1. A simple application
+
+Now let's build a simple application which reads the sensor data and prints it to the serial console. Note that it takes three minutes to get the sensor to warm up!
+
+1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
+1. Go to the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) platform page and click *Add to your Mbed compiler*.
+
+    ![Add to your Mbed compiler](media/mbed1.png)
+
+1. Import the example program into the Arm Mbed Compiler by clicking [this link](https://os.mbed.com/compiler/#import:https://github.com/armmbed/iot-deep-dive-lorawan).
+1. Click *Import*.
+1. In the top right corner make sure you selected 'L-TEK FF1705'.
+
+    ![Select right platform](media/mbed3.png)
+
+This has cloned the repository. Now it's time to create some keys for this device so it can join the network.
+
+Open `mbed_app.json` and locate `lora.device-address`.
+
+## 2. Connecting to The Things Network
+
+We need to program some keys in the device. LoRaWAN uses an end-to-end encryption scheme that uses two session keys. The network server holds one key, and the application server holds the other. (In this tutorial, TTN fulfils both roles). These session keys are created when the device joins the network. For the initial authentication with the network, the application needs its device EUI, the EUI of the application it wants to join (referred to as the application EUI) and a preshared key (the application key). Because the number of people in this workshop we're programming the session keys in directly. This is not safe and should not be done in production!
+
+Let's register this device in The Things Network and grab some keys!
+
+### Connecting to The Things Network
+
+#### Setting up
+
+1. Go to [The Things Network Console](https://console.thethingsnetwork.org)
+2. Login with your account or click [Create an account](https://account.thethingsnetwork.org/register)
+
+   ![console](media/console.png)
+
+   >The Console allows you to manage Applications and Gateways.
+
+3. Click **Applications**
+4. Click **Add application**
+5. Enter a **Application ID** and **Description**, this can be anything
+6. Be sure to select `ttn-handler-us-west` in **Handler registration**
+
+   ![add-application](media/add-application.png)
+
+   >The Things Network is a global and distributed network. Selecting the Handler that is closest to you and your gateways allows for higher response times.
+
+7. Click **Add application**
+
+   ![application-overview](media/application-overview.png)
+
+   >LoRaWAN devices send binary data to minimize the payload size. This reduces channel utilization and power consumption. Applications, however, like to work with JSON objects or even XML. In order to decode binary payload to an object, The Things Network supports [CayenneLPP](https://www.thethingsnetwork.org/docs/devices/arduino/api/cayennelpp.html) and Payload Functions: JavaScript lambda functions to encode and decode binary payload and JSON objects. In this example, we use CayenneLPP.
+
+8. Go to **Payload Format** and select **CayenneLPP**
+
+   ![payload-format](media/payload-format.png)
+
+#### Registering your Device
+
+1. In your application, go to **Devices**
+1. Click **register device**
+1. Enter a **Device ID**
+1. Look very closely at the Multi-Tech xDot on your L-Tek FF1705, the **Device EUI** is printed after **NODE**:
+
+   ![node-eui](media/node-eui.jpg)
+
+   >The EUI starts with `00:80:00:00:...`. Enter without the colons.
+
+   ![register-device](media/register-device.png)
+
+   >You can leave the Application EUI to be generated automatically.
+
+1. Click **Register**
+
+   ![device-overview](media/device-overview.png)
+
+1. Click **Settings**.
+
+    ![settings](media/ttn20.png)
+
+1. Switch to **ABP**.
+
+    ![settings](media/ttn21.png)
+
+1. Disable frame counter checks.
+
+    ![frame-counter stuff](media/ttn22.png)
+
+1. Click **Save**.
+
+Now we need to get the device address, network session key and application session key.
+
+1. Click the **Copy** button next to 'Device Address' to copy to clipboard.
+
+    ![device-address](media/ttn23.png)
+
+1. Click the `< >` button of the **Network session key** and **Application session key** values to show the value as C-style array.
+1. Click the **Copy** button on the right of the value to copy to clipboard.
+
+
+#### Pasting them in the Online Compiler
+
+In the Online Compiler now open `mbed_app.json`, and paste the keys in:
+
+![Put in the keys](media/ttn24.png)
+
+**Note 1:** Make sure to put `0x` in front of device address!!!
+**Note 2:** Do not forget the `;` after pasting.
+
+Now compile this application:
+
+
+1. Click *Compile*.
+
+    ![Compile](media/mbed4.png)
+
+1. 1. A binary (.bin) file downloads, use drag-and-drop to drag the file to the DAPLINK device (like a USB mass storage device).
+
+    **Note:** Here's a [video](https://youtu.be/L5TcmFFD0iw?t=1m25s).
+
+1. When flashing is complete, hit the **RESET** button on the board (next to USB).
+
+The board should now connect to The Things Network. Inspect the *Data* tab in the TTN console to see the device connecting.
+
+![console-data](media/console-data.png)
+
+## 3. Showing logs
+
+Something not right? Let's inspect the logs... If all is well, you should see something similar to:
+
+```
+LoRaWAN stack initialized
+Connection - In Progress ...
+Connection - Successful
+Sensor value is 26.00
+4 bytes scheduled for transmission
 ```
 
-### Selecting radio
+#### Windows
 
-Mbed OS provides inherent support for a variety of modules. If your device is one of the those modules, you may skip this part. The correct radio type and pin set is already provided for the modules in the `target-overrides` field. For more information on supported modules, please refer to the [module support section](#module-support)
+To see debug messages, install:
 
-If you are using an Mbed Enabled radio shield such as [Mbed SX1276 shield LoRa](https://os.mbed.com/components/SX1276MB1xAS/) or [Mbed SX1272 LoRa shield ](https://os.mbed.com/components/SX1272MB2xAS/) with any Mbed Enabled board, this part is relevant. You can use any Mbed Enabled board that comes with an arduino form factor.
+1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
+    * See above for more instructions.
+    * No need to install this if you're on Windows 10.
+1. [Tera term](https://osdn.net/projects/ttssh2/downloads/66361/teraterm-4.92.exe/) - to see debug messages from the board.
 
-Please select your radio type by modifying the `lora-radio` field and providing a pin set if it is different from the default. For example:
+When you open Tera Term, select *Serial*, and then select the Mbed COM port.
 
-```json
-"lora-radio": {
-    "help": "Which radio to use (options: SX1272,SX1276)",
-    "value": "SX1272"
-},
-```
+![Tera Term](media/mbed5.png)
 
-### Add network credentials
+#### OS/X
 
-Open the file `mbed_app.json` in the root directory of your application. This file contains all the user specific configurations your application and the Mbed OS LoRaWAN stack need. 
-
-#### For OTAA
-
-Please add `Device EUI`, `Application EUI` and `Application Key` needed for Over-the-air-activation(OTAA). For example:
-
-```json
-
-"lora.device-eui": "{ YOUR_DEVICE_EUI }",
-"lora.application-eui": "{ YOUR_APPLICATION_EUI }",
-"lora.application-key": "{ YOUR_APPLICATION_KEY }"
-```
-
-#### For ABP
-
-For Activation-By-Personalization (ABP) connection method, modify the `mbed_app.json` to enable ABP. You can do it by simply turning off OTAA. For example:
-
-```json
-"lora.over-the-air-activation": false,
-```
-
-In addition to that, you need to provide `Application Session Key`, `Network Session Key` and `Device Address`. For example:
-
-```json
-"lora.appskey": "{ YOUR_APPLICATION_SESSION_KEY }",
-"lora.nwkskey": "{ YOUR_NETWORK_SESSION_KEY }",
-"lora.device-address": " YOUR_DEVICE_ADDRESS_IN_HEX  " 
-```
-
-## Configuring the application
-
-The Mbed OS LoRaWAN stack provides a lot of configuration controls to the application through the Mbed OS configuration system. The previous section discusses some of these controls. This section highlights some useful features that you can configure.
-
-### Selecting a PHY
-
-The LoRaWAN protocol is subject to various country specific regulations concerning radio emissions. That's why the Mbed OS LoRaWAN stack provides a `LoRaPHY` class that you can use to implement any region specific PHY layer. Currently, the Mbed OS LoRaWAN stack provides 10 different country specific implementations of `LoRaPHY` class. Selection of a specific PHY layer happens at compile time. By default, the Mbed OS LoRaWAN stack uses `EU 868 MHz` PHY. An example of selecting a PHY can be:
-
-```josn
-        "phy": {
-            "help": "LoRa PHY region. 0 = EU868 (default), 1 = AS923, 2 = AU915, 3 = CN470, 4 = CN779, 5 = EU433, 6 = IN865, 7 = KR920, 8 = US915, 9 = US915_HYBRID",
-            "value": "0"
-        },
-```
-
-### Duty cycling
-
-LoRaWAN v1.0.2 specifcation is exclusively duty cycle based. This application comes with duty cycle enabled by default. In other words, the Mbed OS LoRaWAN stack enforces duty cycle. The stack keeps track of transmissions on the channels in use and schedules transmissions on channels that become available in the shortest time possible. We recommend you keep duty cycle on for compliance with your country specific regulations. 
-
-However, you can define a timer value in the application, which you can use to perform a periodic uplink when the duty cycle is turned off. Such a setup should be used only for testing or with a large enough timer value. For example:
-
-```josn 
-"target_overrides": {
-	"*": {
-		"lora.duty-cycle-on": false
-		},
-	}
-}
-```
-
-## Module support
-
-Here is a nonexhaustive list of boards and modules that we have tested with the Mbed OS LoRaWAN stack.
-
-- MultiTech mDot.
-- MultiTech xDot.
-- LTEK_FF1705.
-- Advantech Wise 1510.
-- ST B-L072Z-LRWAN1 LoRa®Discovery kit (with muRata radio chip).
-
-## Compiling the application
-
-Use Mbed CLI commands to generate a binary for the application.
-For example:
-
-```sh
-$ mbed compile -m YOUR_TARGET -t ARM
-```
-
-## Running the application
-
-Drag and drop the application binary from `BUILD/YOUR_TARGET/ARM/mbed-os-example-lora.bin` to your Mbed enabled target hardware, which appears as a USB device on your host machine. 
-
-Attach a serial console emulator of your choice (for example, PuTTY, Minicom or screen) to your USB device. Set the baudrate to 115200 bit/s, and reset your board by pressing the reset button.
-
-You should see an output similar to this:
+No need to install a driver. Open a terminal and run:
 
 ```
-Mbed LoRaWANStack initialized 
-
- CONFIRMED message retries : 3 
-
- Adaptive data  rate (ADR) - Enabled 
-
- Connection - In Progress ...
-
- Connection - Successful 
-
- Dummy Sensor Value = 2.1 
-
- 25 bytes scheduled for transmission 
- 
- Message Sent to Network Server
-
+screen /dev/tty.usbm            # now press TAB to autocomplete and then ENTER
 ```
 
-## [Optional] Adding trace library
-To enable Mbed trace, add to your `mbed_app.json` the following fields:
+To exit, press: `CTRL+A` then `CTRL+\` then press `y`.
 
-```json
-    "target_overrides": {
-        "*": {
-            "target.features_add": ["COMMON_PAL"],
-            "mbed-trace.enable": true
-            }
-     }
-```
-The trace is disabled by default to save RAM.
+#### Linux
 
-## [Optional] Memory optimization 
-
-Using `Arm CC compiler` instead of `GCC` reduces `3K` of RAM. Currently the application takes about `15K` of static RAM with Arm CC, which spills over for the platforms with `20K` of RAM because you need to leave space, about `5K`, for dynamic allocation. So if you reduce the application stack size, you can barely fit into the 20K platforms.
-
-For example, add the following into `config` section in your `mbed_app.json`:
+If it's not installed, install GNU screen (`sudo apt-get install screen`). Then open a terminal and find out the handler for your device:
 
 ```
-"main_stack_size": {
-    "value": 2048
-}
+$ ls /dev/ttyACM*
+/dev/ttyACM0
 ```
 
-Essentially you can make the whole application with Mbed LoRaWAN stack in 6K if you drop the RTOS from Mbed OS and use a smaller standard C/C++ library like new-lib-nano. Please find instructions [here](https://os.mbed.com/blog/entry/Reducing-memory-usage-with-a-custom-prin/).
- 
+Then connect to the board using screen:
 
-For more information, please follow this [blog post](https://os.mbed.com/blog/entry/Reducing-memory-usage-by-tuning-RTOS-con/).
+```
+sudo screen /dev/ttyACM0 9600                # might not need sudo if set up lsusb rules properly
+```
+
+To exit, press `CTRL+A` then type `:quit`.
+
+## 4. Getting data out of The Things Network
+
+To get some data out of The Things Network you can use their API. Today we'll use the node.js API, but there are many more.
+
+First, you need the application ID, and the application key.
+
+1. Open the TTN console and go to your application.
+1. Your application ID is noted on the top, write it down.
+
+    ![TTN App ID](media/ttn17.png)
+
+1. Your application Key is at the bottom of the page. Click the 'show' icon to make it visible and note it down.
+
+    ![TTN App Key](media/ttn18.png)
+
+With these keys we can write a Node.js application that can retrieve data from TTN.
+
+1. Open a terminal or command prompt.
+1. Create a new folder:
+
+    ```
+    $ mkdir ttn-api
+    $ cd ttn-api
+    ```
+
+1. In this folder run:
+
+    ```
+    $ npm install ttn blessed blessed-contrib
+    ```
+
+1. Create a new file `server.js` in this folder, and add the following content (replace YOUR_APP_ID and YOUR_ACCESS_KEY with the respective values from the TTN console):
+
+    ```js
+    let TTN_APP_ID = 'YOUR_APP_ID';
+    let TTN_ACCESS_KEY = 'YOUR_ACCESS_KEY';
+
+    const ttn = require('ttn');
+
+    TTN_APP_ID = process.env['TTN_APP_ID'] || TTN_APP_ID;
+    TTN_ACCESS_KEY = process.env['TTN_ACCESS_KEY'] || TTN_ACCESS_KEY;
+
+    ttn.data(TTN_APP_ID, TTN_ACCESS_KEY).then(client => {
+        client.on('uplink', (devId, payload) => {
+            console.log('retrieved uplink message', devId, payload);
+        });
+
+        console.log('Connected to The Things Network data channel');
+    });
+    ```
+
+1. Now run:
+
+    ```
+    $ node server.js
+    ```
+
+The application authenticates with the The Things Network and receives any message from your device.
+
+**Showing simple graphs**
+
+We can also graph the values directly to the console. Replace `server.js` with:
+
+```js
+let TTN_APP_ID = 'YOUR_APP_ID';
+let TTN_ACCESS_KEY = 'YOUR_ACCESS_KEY';
+
+const ttn = require('ttn');
+const blessed = require('blessed');
+const contrib = require('blessed-contrib');
+const screen = blessed.screen();
+const line = contrib.line({ width: 80, height: 20, left: 0, bottom: 0, xPadding: 5, yPadding: 10, minY: 0, maxY: 50, numYLabels: 7 });
+
+let data = [
+    { title: 'Temperature',
+        x: [ ],
+        y: [ ],
+        style: {
+            line: 'red'
+        }
+    }
+];
+
+TTN_APP_ID = process.env['TTN_APP_ID'] || TTN_APP_ID;
+TTN_ACCESS_KEY = process.env['TTN_ACCESS_KEY'] || TTN_ACCESS_KEY;
+
+let series = [];
+
+ttn.data(TTN_APP_ID, TTN_ACCESS_KEY).then(client => {
+    client.on('uplink', (devId, payload) => {
+        // console.log('retrieved uplink message', devId, payload.payload_fields.temperature_10);
+
+        data[0].x.push(new Date(payload.metadata.time).toLocaleTimeString().split(' ')[0]);
+        data[0].y.push(payload.payload_fields.temperature_10);
+
+        line.setData(data);
+        screen.render();
+    });
+
+    console.log('Connected to The Things Network data channel');
+});
+
+
+screen.append(line); //must append before setting data
+
+screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+  return process.exit(0);
+});
+```
+
+## 5. Making a dashboard / extra credit
+
+* You can use Cayenne MyDevices to create a dashboard. Instructions are [here](https://www.thethingsnetwork.org/docs/applications/cayenne/).
+* Add readings from the humidity sensor, and send them to the dashboard too.
+
+![Victory](media/victory.gif)
+
+**Add coverage**
+
+The Things Network is a collaborative network. You can extend the network yourself by placing a gateway, or you can use existing coverage from community members. See [The Things Network Map](https://www.thethingsnetwork.org/map) to see if there is coverage in your area or region.
+
+Setting up a gateway is easy and becomes more and more affordable. Here are two recommended options:
+
+1. The highly configurable [Multi-Tech Conduit](https://www.digikey.com/en/product-highlight/m/multi-tech-systems/iot-platform); you need an `MTAC-LORA-915` or `MTAC-LORA-868` depending [on your country](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html), as well as a `MTCDT` Conduit;
+1. The Things Network's own product, [The Things Gateway 915 MHz](http://www.newark.com/productimages/standard/en_US/05AC1807-40.jpg) or [The Things Gateway 868 MHz](http://uk.farnell.com/the-things-network/ttn-gw-868/the-things-gateway-eu/dp/2675813)
+
