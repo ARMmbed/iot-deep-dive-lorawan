@@ -140,7 +140,7 @@ Let's register this device in The Things Network and grab some keys!
 
     ![settings](media/ttn21.png)
 
-1. Disable frame counter checks.
+1. Disable (or uncheck) frame counter checks.
 
     ![frame-counter stuff](media/ttn22.png)
 
@@ -162,10 +162,9 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 
 ![Put in the keys](media/ttn24.png)
 
-**Note:** Make sure to put `0x` in front of device address!!!
+**Note:** Make sure to put `0x` in front of device address!!! (i.e. `"lora.device-address": "0x26021CED",`)
 
 Now compile this application:
-
 
 1. Click *Compile*.
 
@@ -214,7 +213,7 @@ No need to install a driver. Open a terminal and run:
 screen /dev/tty.usbm            # now press TAB to autocomplete and then ENTER
 ```
 
-To exit, press: `CTRL+A` then `CTRL+\` then press `y`.
+To exit, press: `CTRL+A` then `CTRL+\` then press `y` (or just `CTRL+Z`).
 
 #### Linux
 
