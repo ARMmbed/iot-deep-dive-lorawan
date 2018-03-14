@@ -213,7 +213,7 @@ No need to install a driver. Open a terminal and run:
 screen /dev/tty.usbm            # now press TAB to autocomplete and then ENTER
 ```
 
-To exit, press: `CTRL+A` then `CTRL+\` then press `y` (or just `CTRL+Z`).
+To exit, press: `CTRL+A` then `CTRL+\` then press `y`.
 
 #### Linux
 
@@ -234,7 +234,7 @@ To exit, press `CTRL+A` then type `:quit`.
 
 ## 4. Getting data out of The Things Network
 
-To get some data out of The Things Network you can use their API. Today we'll use the node.js API, but there are many more.
+To get some data out of The Things Network you can use their API. Today we'll use the Node.js API, but there are many more.
 
 First, you need the application ID and the application key.
 
@@ -262,6 +262,8 @@ With these keys we can write a Node.js application that can retrieve data from T
     ```
     $ npm install ttn blessed blessed-contrib
     ```
+
+    **Note:** You can ignore the `ENOENT: no such file or directory` errors.
 
 1. Create a new file `server.js` in this folder, and add the following content (replace YOUR_APP_ID and YOUR_ACCESS_KEY with the respective values from the TTN console):
 
