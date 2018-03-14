@@ -140,7 +140,7 @@ Let's register this device in The Things Network and grab some keys!
 
     ![settings](media/ttn21.png)
 
-1. Disable frame counter checks.
+1. Disable (or uncheck) frame counter checks.
 
     ![frame-counter stuff](media/ttn22.png)
 
@@ -162,16 +162,15 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 
 ![Put in the keys](media/ttn24.png)
 
-**Note:** Make sure to put `0x` in front of device address!!!
+**Note:** Make sure to put `0x` in front of device address!!! (i.e. `"lora.device-address": "0x26021CED",`)
 
-Now compile this application:
-
+Now compile the application:
 
 1. Click *Compile*.
 
     ![Compile](media/mbed4.png)
 
-1. 1. A binary (.bin) file downloads, use drag-and-drop to copy the file to the DAPLINK device (like a USB mass storage device).
+1. A binary (.bin) file downloads, use drag-and-drop to copy the file to the DAPLINK device (like a USB mass storage device).
 
     **Note:** Here's a [video](https://youtu.be/L5TcmFFD0iw?t=1m25s).
 
@@ -235,7 +234,7 @@ To exit, press `CTRL+A` then type `:quit`.
 
 ## 4. Getting data out of The Things Network
 
-To get some data out of The Things Network you can use their API. Today we'll use the node.js API, but there are many more.
+To get some data out of The Things Network you can use their API. Today we'll use the Node.js API, but there are many more.
 
 First, you need the application ID and the application key.
 
@@ -263,6 +262,8 @@ With these keys we can write a Node.js application that can retrieve data from T
     ```
     $ npm install ttn blessed blessed-contrib
     ```
+
+    **Note:** You can ignore the `ENOENT: no such file or directory` errors.
 
 1. Create a new file `server.js` in this folder, and add the following content (replace YOUR_APP_ID and YOUR_ACCESS_KEY with the respective values from the TTN console):
 
