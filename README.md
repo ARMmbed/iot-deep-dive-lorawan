@@ -2,11 +2,11 @@
 
 Welcome to the IoT deep dive session on LoRaWAN. If you have any questions, please just give a shout. We are here to help.
 
-In this session you'll be building five examples, introducing you to:
+In this session you'll be building some examples, introducing you to:
 
 1. Building IoT devices with [Arm Mbed OS](https://os.mbed.com/).
 1. Connecting your device to [The Things Network](https://www.thethingsnetwork.org/) using LoRaWAN.
-1. Data visualization with CayenneLPP.
+1. Data visualization through the TTN API.
 
 In case you're stuck this document will help you get back on track. If you're a fast learner, there are 'extra credit'-assignments at the end of each section. Please help your neighbours as well :-)
 
@@ -161,7 +161,6 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 ![Put in the keys](media/ttn24.png)
 
 **Note 1:** Make sure to put `0x` in front of device address!!!
-**Note 2:** Do not forget the `;` after pasting.
 
 Now compile this application:
 
@@ -352,6 +351,8 @@ screen.key(['escape', 'q', 'C-c'], function(ch, key) {
 ![Map](media/ttn25.png)
 
 Got everything working? Add your sensor to the map! Go to http://ec2-52-211-146-247.eu-west-1.compute.amazonaws.com:7271/ and put your application ID in the top right corner. When prompted, add your access key!
+
+Want to hack on the map code? It's on [GitHub](https://github.com/ARMmbed/iot-deep-dive-lorawan).
 
 ![Victory](media/victory.gif)
 
