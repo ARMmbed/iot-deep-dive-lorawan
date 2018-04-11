@@ -47,6 +47,9 @@ int main(void) {
         return -1;
     }
 
+    lorawan->disable_adaptive_datarate();
+    lorawan->set_datarate(5); // if on US915 change this to 3
+
     printf("LoRaWAN stack initialized\r\n");
 
     // prepare application callbacks
