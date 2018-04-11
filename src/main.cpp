@@ -73,6 +73,7 @@ int main(void) {
  * Sends a message to the Network Server
  */
 static void send_message() {
+#if MBED_CONF_APP_REAL_SENSOR == 1
     static Dht11 sensor(SPI_MISO);
     int r = sensor.read();
     if (r != DHTLIB_OK) {
@@ -81,7 +82,9 @@ static void send_message() {
     }
 
     float sensor_value = sensor.getCelsius();
-    // float sensor_value = (float)rand() / (float)(RAND_MAX / 20.0f);
+#else
+    float sensor_value = (float)rand() / (float)(RAND_MAX / 20.0f);
+#endif
 
     // transmission payload, max 50 bytes in size
     CayenneLPP payload(50);
