@@ -21,7 +21,7 @@ If you are on Windows, install:
 
 1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
 
-    **Note:** Not needed on Windows 10.
+    **Note:** Not needed on Windows 10+.
 
 1. [Tera term](https://osdn.net/projects/ttssh2/downloads/66361/teraterm-4.92.exe/) - to see debug messages from the board.
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
@@ -46,9 +46,8 @@ We're using the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) deve
 Grab the following items:
 
 * Development board.
-* Micro-USB cable.
+* Mini-USB cable.
 * Grove temperature and humidity sensor.
-* Grove connector to male jumper wires.
 
 Click the Grove connector onto the temperature sensor. Connect the wires to the development board like this:
 
@@ -63,13 +62,13 @@ Click the Grove connector onto the temperature sensor. Connect the wires to the 
 Now let's build a simple application which reads the sensor data and prints it to the serial console.
 
 1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
-1. Go to the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) platform page and click *Add to your Mbed compiler*.
+1. Go to the [ST Nucleo L476RG](https://os.mbed.com/platforms/ST-Nucleo-L476RG/add/) platform page. Normally you would need to click *Add to your Mbed compiler*, as below. This link will auto add it for you though!
 
     ![Add to your Mbed compiler](media/mbed1.png)
 
 1. Import the example program into the Arm Mbed Compiler by clicking [this link](https://os.mbed.com/compiler/#import:https://github.com/armmbed/iot-deep-dive-lorawan).
 1. Click *Import*.
-1. In the top right corner make sure you selected 'L-TEK FF1705'.
+1. In the top right corner make sure you selected your target as 'Nucleo L476RG'.
 
     ![Select the correct platform](media/mbed3.png)
 
