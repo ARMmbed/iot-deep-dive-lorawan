@@ -70,17 +70,18 @@ Now let's build a simple application which reads the sensor data and prints it t
 1. Click *Import*.
 1. In the top right corner make sure you selected your target as 'Nucleo L476RG'.
 
-    ![Select the correct platform](media/mbed3.png)
 
 This has cloned the repository. Now it's time to create some keys for this device so it can join the network.
 
-Open `mbed_app.json` and locate `lora.device-address`.
+Open `mbed_app.json` and locate `lora.device-eui`, `lora.application-eui`, `lora.application-key`. We will get these values from The Things Network in the next steps. 
 
 ## 2. Connecting to The Things Network
 
 We need to program some keys in the device. LoRaWAN uses an end-to-end encryption scheme that uses two session keys. The network server holds one key, and the application server holds the other. (In this tutorial, TTN fulfils both roles). These session keys are created when the device joins the network. For the initial authentication with the network, the application needs its device EUI, the EUI of the application it wants to join (referred to as the application EUI) and a preshared key (the application key). Because the number of people in this workshop we're programming the session keys in directly. This is not safe and should not be done in production!
 
 Let's register this device in The Things Network and grab some keys!
+
+![](media/TTN-register-app-device.gif)
 
 ### Connecting to The Things Network
 
