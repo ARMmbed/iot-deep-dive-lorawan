@@ -77,14 +77,14 @@ int main(void) {
  */
 static void send_message() {
 #if MBED_CONF_APP_REAL_SENSOR == 1
-    static Dht11 sensor(SPI_MISO);
+    static Dht11 sensor(D6);
     int r = sensor.read();
     if (r != DHTLIB_OK) {
         printf("Reading sensor value failed... %d\r\n", r);
         return;
     }
 
-    float sensor_value = sensor.getCelsius();
+    float sensor_value = sensor.getFahrenheit();
 #else
     float sensor_value = (float)rand() / (float)(RAND_MAX / 20.0f);
 #endif

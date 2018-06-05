@@ -23,37 +23,37 @@ If you are on Windows, install:
 
     **Note:** Not needed on Windows 10+.
 
-1. [Tera term](https://osdn.net/projects/ttssh2/downloads/66361/teraterm-4.92.exe/) - to see debug messages from the board.
+1. [STLink Serial Driver](https://os.mbed.com/teams/ST/wiki/ST-Link-Driver) - extra layer of serial driver, because ST is awesome like that. 
+
+1. Mbed CLI - [Windows Installer](https://mbed-media.mbed.com/filer_public/7f/46/7f46e205-52f5-48e2-be64-8f30d52f6d75/mbed_installer_v041.exe) or use `pip install -U mbed-cli`
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
 
 **Linux**
 
 If you're on Linux, install:
 
-1. screen - e.g. via `sudo apt install screen`
+1. Mbed CLI - `pip install -U mbed-cli`
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
 
 **MacOS**
 
 If you're on MacOS, install:
 
+1. Mbed CLI - `pip install -U mbed-cli` or try out the [OSX Installer](https://github.com/blackstoneengineering/mbed-cli-osx-installer/releases)
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
 
 ## Building the circuit
 
-We're using the [L-TEK FF1705](https://os.mbed.com/platforms/L-TEK-FF1705/) development board, which contains the Multi-Tech xDot module. In addition, you can use a Grove temperature & humidity sensor. Let's connect these sensors and verify that the board works.
+We're using the [Semtech SX1272](https://os.mbed.com/components/SX1272MB2xAS/) radio shield together with the ST Nucleo L476RG board. In addition, you can use a Grove temperature & humidity sensor. Let's connect these sensors and verify that the board works.
 
 Grab the following items:
 
-* Development board.
+* Nucleo Development board.
+* Semtech Radio Shield
 * Mini-USB cable.
 * Grove temperature and humidity sensor.
 
 Click the Grove connector onto the temperature sensor. Connect the wires to the development board like this:
-
-* Red -> 5V
-* Black -> GND
-* Yellow -> SPI_MISO
 
 ![Wires](media/ttn26.jpg)
 
@@ -62,9 +62,7 @@ Click the Grove connector onto the temperature sensor. Connect the wires to the 
 Now let's build a simple application which reads the sensor data and prints it to the serial console.
 
 1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
-1. Go to the [ST Nucleo L476RG](https://os.mbed.com/platforms/ST-Nucleo-L476RG/add/) platform page. Normally you would need to click *Add to your Mbed compiler*, as below. This link will auto add it for you though!
-
-    ![Add to your Mbed compiler](media/mbed1.png)
+1. Go to the [ST Nucleo L476RG](https://os.mbed.com/platforms/ST-Nucleo-L476RG/add/) platform page. Alternatively open the `MBED.HTM` on the board and it will be auto-added to your compiler. 
 
 1. Import the example program into the Arm Mbed Compiler by clicking [this link](https://os.mbed.com/compiler/#import:https://github.com/armmbed/iot-deep-dive-lorawan).
 1. Click *Import*.
@@ -117,12 +115,8 @@ Let's register this device in The Things Network and grab some keys!
 
 1. In your application, go to **Devices**
 1. Click **register device**
-1. Enter a **Device ID**
-1. Look very closely at the Multi-Tech xDot on your L-Tek FF1705, the **Device EUI** is printed after **NODE**:
-
-   ![node-eui](media/node-eui.jpg)
-
-   >The EUI starts with `00:80:00:00:...`. Enter without the colons.
+1. Set a **Device ID**
+1. Click on arrows for **Device EUI** to make it auto-generated.:
 
    ![register-device](media/register-device.png)
 
@@ -132,19 +126,6 @@ Let's register this device in The Things Network and grab some keys!
 
    ![device-overview](media/device-overview.png)
 
-1. Click **Settings**.
-
-    ![settings](media/ttn20.png)
-
-1. Switch to **ABP**.
-
-    ![settings](media/ttn21.png)
-
-1. Disable (or uncheck) frame counter checks.
-
-    ![frame-counter stuff](media/ttn22.png)
-
-1. Click **Save**.
 
 Now we need to get the device address, network session key and application session key.
 
@@ -182,6 +163,10 @@ The board should now connect to The Things Network. Inspect the *Data* tab in th
 
 **No data:** Check the logs!
 
+### Troubleshooting 
+- Make sure the `lora.phy` is set to the correct region that you're in. US is 8, europe is 0....etc
+- 
+
 ## 3. Showing logs
 
 Something not right? Let's inspect the logs... If all is well, you should see something similar to:
@@ -200,45 +185,7 @@ Message Sent to Network Server
 
 You should see the channels jumping between 8 and 15. If not, wait about a minute to let the sub-band frequency set. Often it takes a while to recognize the right channels.
 
-#### Windows
-
-To see debug messages, install:
-
-1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
-    * See above for more instructions.
-    * No need to install this if you're on Windows 10.
-1. [Tera term](https://osdn.net/projects/ttssh2/downloads/66361/teraterm-4.92.exe/) - to see debug messages from the board.
-
-When you open Tera Term, select *Serial*, and then select the Mbed COM port.
-
-![Tera Term](media/mbed5.png)
-
-#### MacOS
-
-No need to install a driver. Open a terminal and run:
-
-```
-screen /dev/tty.usbm            # now press TAB to autocomplete and then ENTER
-```
-
-To exit, press: `CTRL+A` then `CTRL+\` then press `y`.
-
-#### Linux
-
-If it's not installed, install GNU screen (`sudo apt-get install screen`). Then open a terminal and find out the handler for your device:
-
-```
-$ ls /dev/ttyACM*
-/dev/ttyACM0
-```
-
-Then connect to the board using screen:
-
-```
-sudo screen /dev/ttyACM0 9600                # might not need sudo if set up lsusb rules properly
-```
-
-To exit, press `CTRL+A` then type `:quit`.
+To open up a serial terminal run `mbed sterm` and it will open up an automatically connect at 9600 baud to the board. Press `ctrl+c` to exit. 
 
 ## 4. Getting data out of The Things Network
 
