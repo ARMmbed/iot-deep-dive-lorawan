@@ -13,6 +13,7 @@ In case you're stuck, this document will help you get back on track. If you're a
 ## Prerequisites
 
 1. Create an Arm Mbed online account [here](https://os.mbed.com/account/signup/).
+1. Create a [The Things Network Account](http://www.thethingsnetwork.com)
 1. Then install the following software for your operating system below:
 
 **Windows**
@@ -41,6 +42,12 @@ If you're on MacOS, install:
 
 1. Mbed CLI - `pip install -U mbed-cli` or try out the [OSX Installer](https://github.com/blackstoneengineering/mbed-cli-osx-installer/releases)
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
+
+## Hardware
+- A Mbed Enabled LoRa board and radio or a Mbed Enabled LoRa Module. 
+- DHT11 Temperature Sensor (optional)
+    
+    **NOTE** if you do not have a DHT11 sensor make sure to change the value of `real-sensor` to 0 in `mbed_app.json`. This will then simulate a sensor. 
 
 ## Building the circuit
 
@@ -204,7 +211,7 @@ To get some data out of The Things Network you can use their API. Today we'll us
 
     ![TTN App Key](media/ttn18.png)
 
-### Run Node.js application
+### Make a NodeJS Application from scratch
 
 With these keys we can write a Node.js application that can retrieve data from TTN.
 
@@ -252,20 +259,30 @@ With these keys we can write a Node.js application that can retrieve data from T
 
 The application authenticates with the The Things Network and receives any message from your device.
 
-## 5. Making a dashboard / extra credit
+## 5. Run Map with Sensors 
+
+Now that you have an understanding of how the underlying TTN API works, lets run some nice looking pre-written code for you. 
+
+```
+cd webapp
+node install
+node server.js
+```
+
+Open up a webbrowser to [localhost:7270](http://localhost:7270) and enter your App ID and then App Access Key into the browser. This will then map your device onto the map. 
+
+![Map](media/ttn25.png)
+
+
+## 6. Extra Credit
+
+For the extra awesome people in the room try the following excercises
 
 * Make a small dashboard out of the node.js app, show a nice graph!
 * Add readings from the humidity sensor, and send them to the dashboard too.
 
-## 6. A map with sensors...
 
-![Map](media/ttn25.png)
-
-Got everything working? Add your sensor to the map! Go to http://ec2-52-211-146-247.eu-west-1.compute.amazonaws.com:7271/ and put your application ID in the top right corner. When prompted, add your access key!
-
-Want to hack on the map code? It's on [GitHub](https://github.com/janjongboom/ttn-sensor-maps).
-
-![Victory](media/victory.gif)
+## Further Reading...
 
 **Add coverage**
 
@@ -275,3 +292,14 @@ Setting up a gateway is easy and becomes more and more affordable. Here are two 
 
 1. The highly configurable [Multi-Tech Conduit](https://www.digikey.com/en/product-highlight/m/multi-tech-systems/iot-platform); you need an `MTAC-LORA-915` or `MTAC-LORA-868` depending [on your country](https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html), as well as a `MTCDT` Conduit;
 1. The Things Network's own product, [The Things Gateway 915 MHz](http://www.newark.com/productimages/standard/en_US/05AC1807-40.jpg) or [The Things Gateway 868 MHz](http://uk.farnell.com/the-things-network/ttn-gw-868/the-things-gateway-eu/dp/2675813)
+
+Follow our evangelists on linkedin / twitter to stay up to date on the latest developments
+
+Jan Jongboom:
+    * [@JanJongboom](twitter.com/janjongboom) on Twitter
+    * [Linkedin](https://www.linkedin.com/in/jan-jongboom/)
+
+Austin Blackstone
+    * [@engineer_austin](twitter.com/engineer_austin) on Twitter
+    * [Linkedin](https://www.linkedin.com/in/austinblackstone/)
+    
