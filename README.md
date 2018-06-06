@@ -296,10 +296,10 @@ Setting up a gateway is easy and becomes more and more affordable. Here are two 
 Follow our evangelists on linkedin / twitter to stay up to date on the latest developments
 
 Jan Jongboom:
-    * [@JanJongboom](twitter.com/janjongboom) on Twitter
-    * [Linkedin](https://www.linkedin.com/in/jan-jongboom/)
+* [@JanJongboom](twitter.com/janjongboom) on Twitter
+* [Linkedin](https://www.linkedin.com/in/jan-jongboom/)
 
 Austin Blackstone
-    * [@engineer_austin](twitter.com/engineer_austin) on Twitter
-    * [Linkedin](https://www.linkedin.com/in/austinblackstone/)
-    
+* [@engineer_austin](twitter.com/engineer_austin) on Twitter
+* [Linkedin](https://www.linkedin.com/in/austinblackstone/)
+
