@@ -71,7 +71,7 @@ Now let's build a simple application which reads the sensor data and prints it t
 1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
 1. Go to the [ST Nucleo L476RG](https://os.mbed.com/platforms/ST-Nucleo-L476RG/add/) platform page. Alternatively open the `MBED.HTM` on the board and it will be auto-added to your compiler. 
 
-1. Import the example program into the Arm Mbed Compiler by clicking [this link](https://os.mbed.com/compiler/#import:https://github.com/ARMmbed/iot-deep-dive-lorawan/tree/sx1272-nucleoL476).
+1. Import the example program into the Arm Mbed Compiler by clicking [this link](https://os.mbed.com/compiler/#import:https://github.com/blackstoneengineering/iot-deep-dive-lorawan/).
 1. Click *Import*.
 1. In the top right corner make sure you selected your target as 'Nucleo L476RG'.
 
