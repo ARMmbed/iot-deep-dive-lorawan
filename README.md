@@ -68,6 +68,8 @@ Click the Grove connector onto the temperature sensor. Connect the wires to the 
 
 Now let's build a simple application which reads the sensor data and prints it to the serial console.
 
+![](media/mbed-env-setup.gif)
+
 1. Go to [https://os.mbed.com](https://os.mbed.com) and sign up (or sign in).
 1. Go to the [ST Nucleo L476RG](https://os.mbed.com/platforms/ST-Nucleo-L476RG/add/) platform page. Alternatively open the `MBED.HTM` on the board and it will be auto-added to your compiler. 
 
