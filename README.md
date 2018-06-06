@@ -77,7 +77,7 @@ Open `mbed_app.json` and locate `lora.device-eui`, `lora.application-eui`, `lora
 
 We need to program some keys in the device. LoRaWAN uses an end-to-end encryption scheme that uses two session keys. The network server holds one key, and the application server holds the other. (In this tutorial, TTN fulfils both roles). These session keys are created when the device joins the network. For the initial authentication with the network, the application needs its device EUI, the EUI of the application it wants to join (referred to as the application EUI) and a preshared key (the application key). Because the number of people in this workshop we're programming the session keys in directly. This is not safe and should not be done in production!
 
-Let's register this device in The Things Network and grab some keys!
+Let's register this device in The Things Network and grab some keys! Either follow the gif or the steps below! Make sure to set your application data format to Cayenne!
 
 ![](media/TTN-register-app-device.gif)
 
@@ -127,14 +127,13 @@ Let's register this device in The Things Network and grab some keys!
    ![device-overview](media/device-overview.png)
 
 
-Now we need to get the device address, network session key and application session key.
+Now we need to get the Device EUI, Application EUI and Appliaction Key.
 
-1. Click the **Copy** button next to 'Device Address' to copy to clipboard.
+1. Click the `< >` button of the **Device EUI** and **Application EUI** and **App Key** values to show the value as C-style array.
 
     ![device-address](media/ttn23.png)
 
-1. Click the `< >` button of the **Network session key** and **Application session key** values to show the value as C-style array.
-1. Click the **Copy** button on the right of the value to copy to clipboard.
+1. Copy / paste these three values into the online compiler in the next section. 
 
 
 #### Pasting them in the Online Compiler
@@ -143,7 +142,7 @@ In the Online Compiler now open `mbed_app.json`, and paste the keys in:
 
 ![Put in the keys](media/ttn24.png)
 
-**Note:** Make sure to put `0x` in front of device address!!! (i.e. `"lora.device-address": "0x26021CED",`)
+**Note:** Make sure to put `0x` in front of the values!!! (i.e. `"lora.device-eui": "0x26021CED",`)
 
 Now compile the application:
 
@@ -165,7 +164,8 @@ The board should now connect to The Things Network. Inspect the *Data* tab in th
 
 ### Troubleshooting 
 - Make sure the `lora.phy` is set to the correct region that you're in. US is 8, europe is 0....etc
-- 
+- Set Application Data format to Cayenne
+- Make sure you are using Over the Air activation
 
 ## 3. Showing logs
 
@@ -189,18 +189,22 @@ To open up a serial terminal run `mbed sterm` and it will open up an automatical
 
 ## 4. Getting data out of The Things Network
 
-To get some data out of The Things Network you can use their API. Today we'll use the Node.js API, but there are many more.
+To get some data out of The Things Network you can use their API. Today we'll use the Node.js API, but there are many more languages available. To use the API we will need your Application ID and App Access Key.
 
-First, you need the application ID and the application key.
+![Copy your Web App Keys](media/ttn-application-acccess-key.gif)
 
+### Application ID
 1. Open the TTN console and go to your application.
 1. Your application ID is noted on the top, write it down.
 
     ![TTN App ID](media/ttn17.png)
 
-1. Your application Key is at the bottom of the page. Click the 'show' icon to make it visible and note it down.
+### Application Access Key
+1. Your application Access Key is at the bottom of the page. Click the 'show' icon to make it visible and note it down.
 
     ![TTN App Key](media/ttn18.png)
+
+### Run Node.js application
 
 With these keys we can write a Node.js application that can retrieve data from TTN.
 
