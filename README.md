@@ -16,18 +16,16 @@ In case you're stuck, this document will help you get back on track. If you're a
 1. Create a [The Things Network Account](http://www.thethingsnetwork.com)
 1. Then install the following software for your operating system below:
 
+    **Note** make sure you are using the latest mbed-cli. You can update it by running `pip install -U mbed-cli`
+
 **Windows**
 
 If you are on Windows, install:
 
-1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
+1. Mbed CLI - [Windows Installer](https://mbed-media.mbed.com/filer_public/7f/46/7f46e205-52f5-48e2-be64-8f30d52f6d75/mbed_installer_v041.exe), this will install a serial terminal and the windows serial driver
+1. [Node.js](https://nodejs.org/en/download/) - to run the webapp later.
 
-    **Note:** Not needed on Windows 10+.
-
-1. [STLink Serial Driver](https://os.mbed.com/teams/ST/wiki/ST-Link-Driver) - extra layer of serial driver, because ST is awesome like that. 
-
-1. Mbed CLI - [Windows Installer](https://mbed-media.mbed.com/filer_public/7f/46/7f46e205-52f5-48e2-be64-8f30d52f6d75/mbed_installer_v041.exe) or use `pip install -U mbed-cli`
-1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
+    **NOTE** If you have any problems with your board please check the board page for your board. Some boards may require interface firmware updates or special drivers. 
 
 **Linux**
 
@@ -44,7 +42,7 @@ If you're on MacOS, install:
 1. [Node.js](https://nodejs.org/en/download/) - to show visualizations.
 
 ## Hardware
-- A Mbed Enabled LoRa board and radio or a Mbed Enabled LoRa Module. 
+- A Mbed Enabled LoRa board and radio or a Mbed Enabled LoRa Module. [Here](https://os.mbed.com/platforms/?connectivity=24) are some great options. 
 - DHT11 Temperature Sensor (optional)
     
     **NOTE** if you do not have a DHT11 sensor make sure to change the value of `real-sensor` to 0 in `mbed_app.json`. This will then simulate a sensor. 
@@ -104,7 +102,7 @@ Let's register this device in The Things Network and grab some keys! Either foll
 3. Click **Applications**
 4. Click **Add application**
 5. Enter a **Application ID** and **Description**, this can be anything
-6. Be sure to select `ttn-handler-us-west` in **Handler registration**
+6. Be sure to set the closest handler in **Handler registration** if you are in the United States that would be the `ttn-handler-us-west` server, scroll down to the bottom to see it. 
 
    ![add-application](media/add-application.png)
 
@@ -124,8 +122,8 @@ Let's register this device in The Things Network and grab some keys! Either foll
 
 1. In your application, go to **Devices**
 1. Click **register device**
-1. Set a **Device ID**
-1. Click on arrows for **Device EUI** to make it auto-generated.:
+1. Give your device a unique **Device ID**, be creative!
+1. Click on the **<>** for **Device EUI** to change it to auto-generated.:
 
    ![register-device](media/register-device.png)
 
@@ -216,6 +214,8 @@ To get some data out of The Things Network you can use their API. Today we'll us
 ### Make a NodeJS Application from scratch
 
 With these keys we can write a Node.js application that can retrieve data from TTN.
+
+If you havent already, please go install [Node.js](https://nodejs.org/en/download/). 
 
 1. Open a terminal or command prompt.
 1. Create a new folder:
