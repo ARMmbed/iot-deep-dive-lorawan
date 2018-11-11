@@ -1,0 +1,3 @@
+ROOT=.
+TARGET=disco_l072cz_lrwan1
+TOOLCHAIN=ARM
