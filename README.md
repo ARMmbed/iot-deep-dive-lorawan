@@ -1,173 +1,64 @@
-# Example LoRaWAN application for Mbed-OS
+# LoRa Bootcamp - Semtech + Arm Mbed OS + Comcast MachineQ
 
-This is an example application based on `Mbed-OS` LoRaWAN protocol APIs. The Mbed-OS LoRaWAN stack implementation is compliant with LoRaWAN v1.0.2 specification. 
+This workshop is designed to work with the Comcast MachineQ LoRa network. The settings on this project have been modified to specially work with Machine Q. 
 
-## Getting started
+## Pre-requisites
+For this workshop you will need a few things
 
-This application can work with any Network Server if you have correct credentials for the said Network Server. 
+1. [Arm Mbed Account](http://os.mbed.com/signup) - Signup for online compiler account to compile code
+1. [Comcast Machine Q account](https://mqcentral.machineq.net/) - use as LoRa backend to view data
+1. **Proctor Only** upload all devices for the workshop into MachineQ via bulk upload. The .xls spreadsheets are attached in this repo for ease of use. 
 
-### Download the application
+## Hardware
+In this workshop we will be using the [ST Disco LoraWan board](https://os.mbed.com/platforms/ST-Discovery-LRWAN1/) and the [ST Sensor board IKS01A2](https://os.mbed.com/components/X-NUCLEO-IKS01A1/). Go ahead and plug them together
 
-```sh
-$ mbed import mbed-os-example-lorawan
-$ cd mbed-os-example-lorawan
+![hardware](img/hardware.jpg)
 
-#OR
+## Background
+Today we will be sending data in the [Cayenne Low Power payload](https://mydevices.com/cayenne/docs/lora/#lora-cayenne-low-power-payload) format. This format optimizes data with a bit of meta data to minimize the actual data being used on the network. This is super handy for LoRa where every byte counts!
 
-$ git clone git@github.com:ARMmbed/mbed-os-example-lorawan.git
-$ cd mbed-os-example-lorawan
-$ mbed deploy
-```
+## Coding Time!
+Lets get some code running!
 
-### Selecting radio
+1. Add your device to your online compiler account by [clicking here](https://os.mbed.com/platforms/ST-Discovery-LRWAN1/add/) - or go to the platform page and click the 'Add to my compiler' button. 
+    ![add platform](img/add-platform.png)
+1. Import the code example by [clicking here](http://os.mbed.com/compiler/#import:https://github.com/BlackstoneEngineering/lorawan-bootcamp-indy-2018) or by importing the program from `https://github.com/BlackstoneEngineering/lorawan-bootcamp-indy-2018` .
+1. Modify the `mbed_app.json` file. You will need to change the `device-address` and `device-eui` fields to match the piece of paper you were given. Change the last two digists `XX` to match the number you were given.
+    ![modify-line](img/modify-line.png)
+1. Compile your code by pressing the `compile` button. 
+1. Drag and drop the binary to your board to program it. 
 
-Mbed OS provides inherent support for a variety of modules. If your device is one of the those modules, you may skip this part. The correct radio type and pin set is already provided for the modules in the `target-overrides` field. For more information on supported modules, please refer to the [module support section](#module-support)
+## Debugging
+To view the output of your board lets hook up a serial terminal to the board at 115200 baud. This will let you view the sensor values being read and sent across the network. 
 
-If you are using an Mbed Enabled radio shield such as [Mbed SX1276 shield LoRa](https://os.mbed.com/components/SX1276MB1xAS/) or [Mbed SX1272 LoRa shield ](https://os.mbed.com/components/SX1272MB2xAS/) with any Mbed Enabled board, this part is relevant. You can use any Mbed Enabled board that comes with an arduino form factor.
+#### Windows
 
-Please select your radio type by modifying the `lora-radio` field and providing a pin set if it is different from the default. For example:
+To see debug messages, install:
 
-```json
-"lora-radio": {
-    "help": "Which radio to use (options: SX1272,SX1276)",
-    "value": "SX1272"
-},
-```
+1. [Arm Mbed Windows serial driver](http://os.mbed.com/media/downloads/drivers/mbedWinSerial_16466.exe) - serial driver for the board.
+    * See above for more instructions.
+    * No need to install this if you're on Windows 10.
+1. **Serial Terminal** - [Cool Term](https://freeware.the-meiers.org/). 
 
-### Add network credentials
+Make sure to change the baudrate under **Options**->**Baudrate** then press the **Connect** button at the top. 
 
-Open the file `mbed_app.json` in the root directory of your application. This file contains all the user specific configurations your application and the Mbed OS LoRaWAN stack need. Network credentials are typically provided by LoRa network provider.
+#### OS/X
 
-#### For OTAA
+No need to install a driver. Use [Cool Term](https://freeware.the-meiers.org/). Make sure to change the port under **Options**->**Port** and change the baudrate to 115200. Then press Connect. 
 
-Please add `Device EUI`, `Application EUI` and `Application Key` needed for Over-the-air-activation(OTAA). For example:
+#### Linux
 
-```json
+If you're on linux you should know what to do, either use screen or minicom. The boards usually show up under `/dev/tty...`, make sure to use a baudrate of 115200 at 8-n-1 . 
 
-"lora.device-eui": "{ YOUR_DEVICE_EUI }",
-"lora.application-eui": "{ YOUR_APPLICATION_EUI }",
-"lora.application-key": "{ YOUR_APPLICATION_KEY }"
-```
+Once you have the terminal hooked up you should see data that looks like the following
 
-#### For ABP
+![debug-info](img/debug-info.png)
 
-For Activation-By-Personalization (ABP) connection method, modify the `mbed_app.json` to enable ABP. You can do it by simply turning off OTAA. For example:
+## View MachineQ Dashboard
+Go to your dashboard view and add a viewer for your device. If you have number `01` for example you will create a dashboard for `Workshop-Device-01`.
+![dashboard](img/dashboard.png)
 
-```json
-"lora.over-the-air-activation": false,
-```
 
-In addition to that, you need to provide `Application Session Key`, `Network Session Key` and `Device Address`. For example:
-
-```json
-"lora.appskey": "{ YOUR_APPLICATION_SESSION_KEY }",
-"lora.nwkskey": "{ YOUR_NETWORK_SESSION_KEY }",
-"lora.device-address": " YOUR_DEVICE_ADDRESS_IN_HEX  " 
-```
-
-## Configuring the application
-
-The Mbed OS LoRaWAN stack provides a lot of configuration controls to the application through the Mbed OS configuration system. The previous section discusses some of these controls. This section highlights some useful features that you can configure.
-
-### Selecting a PHY
-
-The LoRaWAN protocol is subject to various country specific regulations concerning radio emissions. That's why the Mbed OS LoRaWAN stack provides a `LoRaPHY` class that you can use to implement any region specific PHY layer. Currently, the Mbed OS LoRaWAN stack provides 10 different country specific implementations of `LoRaPHY` class. Selection of a specific PHY layer happens at compile time. By default, the Mbed OS LoRaWAN stack uses `EU 868 MHz` PHY. An example of selecting a PHY can be:
-
-```josn
-        "phy": {
-            "help": "LoRa PHY region. 0 = EU868 (default), 1 = AS923, 2 = AU915, 3 = CN470, 4 = CN779, 5 = EU433, 6 = IN865, 7 = KR920, 8 = US915, 9 = US915_HYBRID",
-            "value": "0"
-        },
-```
-
-### Duty cycling
-
-LoRaWAN v1.0.2 specifcation is exclusively duty cycle based. This application comes with duty cycle enabled by default. In other words, the Mbed OS LoRaWAN stack enforces duty cycle. The stack keeps track of transmissions on the channels in use and schedules transmissions on channels that become available in the shortest time possible. We recommend you keep duty cycle on for compliance with your country specific regulations. 
-
-However, you can define a timer value in the application, which you can use to perform a periodic uplink when the duty cycle is turned off. Such a setup should be used only for testing or with a large enough timer value. For example:
-
-```josn 
-"target_overrides": {
-	"*": {
-		"lora.duty-cycle-on": false
-		},
-	}
-}
-```
-
-## Module support
-
-Here is a nonexhaustive list of boards and modules that we have tested with the Mbed OS LoRaWAN stack.
-
-- MultiTech mDot.
-- MultiTech xDot.
-- LTEK_FF1705.
-- Advantech Wise 1510.
-- ST B-L072Z-LRWAN1 LoRa®Discovery kit (with muRata radio chip).
-
-## Compiling the application
-
-Use Mbed CLI commands to generate a binary for the application.
-For example:
-
-```sh
-$ mbed compile -m YOUR_TARGET -t ARM
-```
-
-## Running the application
-
-Drag and drop the application binary from `BUILD/YOUR_TARGET/ARM/mbed-os-example-lora.bin` to your Mbed enabled target hardware, which appears as a USB device on your host machine. 
-
-Attach a serial console emulator of your choice (for example, PuTTY, Minicom or screen) to your USB device. Set the baudrate to 115200 bit/s, and reset your board by pressing the reset button.
-
-You should see an output similar to this:
-
-```
-Mbed LoRaWANStack initialized 
-
- CONFIRMED message retries : 3 
-
- Adaptive data  rate (ADR) - Enabled 
-
- Connection - In Progress ...
-
- Connection - Successful 
-
- Dummy Sensor Value = 2.1 
-
- 25 bytes scheduled for transmission 
- 
- Message Sent to Network Server
-
-```
-
-## [Optional] Adding trace library
-To enable Mbed trace, add to your `mbed_app.json` the following fields:
-
-```json
-    "target_overrides": {
-        "*": {
-            "mbed-trace.enable": true
-            }
-     }
-```
-The trace is disabled by default to save RAM and reduce main stack usage (see chapter Memory optimization).
-
-**Please note that some targets with small RAM size (e.g. DISCO_L072CZ_LRWAN1 and MTB_MURATA_ABZ) mbed traces cannot be enabled without increasing the default** `"main_stack_size": 1024`**.**
-
-## [Optional] Memory optimization 
-
-Using `Arm CC compiler` instead of `GCC` reduces `3K` of RAM. Currently the application takes about `15K` of static RAM with Arm CC, which spills over for the platforms with `20K` of RAM because you need to leave space, about `5K`, for dynamic allocation. So if you reduce the application stack size, you can barely fit into the 20K platforms.
-
-For example, add the following into `config` section in your `mbed_app.json`:
-
-```
-"main_stack_size": {
-    "value": 2048
-}
-```
-
-Essentially you can make the whole application with Mbed LoRaWAN stack in 6K if you drop the RTOS from Mbed OS and use a smaller standard C/C++ library like new-lib-nano. Please find instructions [here](https://os.mbed.com/blog/entry/Reducing-memory-usage-with-a-custom-prin/).
- 
-
-For more information, please follow this [blog post](https://os.mbed.com/blog/entry/Reducing-memory-usage-by-tuning-RTOS-con/).
+## Extra Credit
+- Turn on verbose debugging by turning on the value `"mbed-trace.enable": true,` in  `mbed_app.json`.
+- Change the temerature values to be send as farenheight instead of celcius.

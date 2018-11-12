@@ -30,17 +30,17 @@
             "platform.stdio-convert-newlines": true,
             "platform.stdio-baud-rate": 115200,
             "platform.default-serial-baud-rate": 115200,
-            "mbed-trace.enable": true,
+            "mbed-trace.enable": false,
             "lora.over-the-air-activation": false,
             "lora.duty-cycle-on": false,
             "lora.public-network": true,
             "lora.phy": "US915",
             "lora.adr-on": true,
-            "lora.app-port": 2,
-            "lora.device-eui": "{  }",
-            "lora.appskey": "{  }",
-            "lora.nwkskey": "{  }",
-            "lora.device-address": ""
+            "lora.app-port": 2,            
+            "lora.appskey": "{ 0x10,0x4A,0x15,0xC0,0x01,0x10,0x4A,0x15,0xC0,0x01,0x10,0x4A,0x15,0xC0,0x01,0xFF }",
+            "lora.nwkskey": "{ 0x10,0x4A,0x15,0xC0,0x01,0x10,0x4A,0x15,0xC0,0x01,0x10,0x4A,0x15,0xC0,0x01,0xFF }",
+            "lora.device-address": "0xBADDADXX",
+            "lora.device-eui": "{ 0x10,0x4A,0x15,0xC0,0x01,0xFF,0xFF,0xXX }",
         },
 
         "K64F": {
